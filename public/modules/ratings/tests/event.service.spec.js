@@ -78,6 +78,21 @@ describe('Events Service Test', function(){
 
             expect(err).toBeDefined();
         });
+
+
+        it('Should return data', function(){
+            $httpBackend.whenGET(eventsUrl+'/1').respond(200, {name: 'Super Event'});
+
+            var data;
+
+            service.getSingleEvent(1).then(function(d){
+                data = d;
+            });
+
+            $httpBackend.flush();
+
+            expect(data.name).toEqual('Super Event');
+        });
     });
 
 

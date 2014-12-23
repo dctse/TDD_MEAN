@@ -7,34 +7,30 @@ var app = angular.module('ratings');
 
 function eventsService ($resource, $q){
 
-    return {
-        getAllEvents: function(){
-            var deferred = $q.defer();
-            $resource('http://localhost:3000/events').query()
-                .$promise
-                .then(function(data){
-                    deferred.resolve(data);
-                })
-                .catch(function(error){
-                    deferred.reject(error);
-                });
+    function getData(route, method){
+        var deferred = $q.defer();
+        var addr = ['http://localhost:3000/events',
+            route].join('/');
 
-            return deferred.promise;
+        $resource(addr)[method]()
+            .$promise
+            .then(function(data){
+                deferred.resolve(data);
+            })
+            .catch(function(error){
+                deferred.reject(error);
+            });
+
+        return deferred.promise;
+    }
+
+    return {
+        getAllEvents: function() {
+            return getData('', 'query');
         },
 
         getSingleEvent: function(id){
-            var deferred = $q.defer();
-            $resource('http://localhost:3000/events/' + id).get()
-                .$promise
-                .then(function(data){
-                    deferred.resolve(data);
-                })
-                .catch(function(error){
-                    deferred.reject(error);
-                });
-
-            return deferred.promise;
-
+            return getData(id, 'get');
         }
     };
 }
