@@ -34,6 +34,7 @@
 		"afterEach",
 		"it",
 		"inject",
+        "spyOn",
 		"expect"
 	],
 	"indent": 4, // Specify indentation spacing
